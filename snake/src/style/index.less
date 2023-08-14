@@ -11,6 +11,7 @@
 
 body {
     font: bold 20px "Courier";
+    position: relative;
 }
 
 //设置主窗口的样式
@@ -93,10 +94,34 @@ body {
         justify-content: space-between;
     }
 }
+#history{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    padding: 0 35px;
+    background-color: @bg-color;
+    border: 5px solid black;
+    // 设置圆角
+    border-radius: 30px;
+    #sort{
+        list-style: none;
+        li{
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+    }
+}
 @media only screen and (max-width: 2500px) {
+    #history{
+        display: block;
+    }
     #anjian{display: none;}
 }
 @media only screen and (max-width: 500px) {
+    #history{
+        display: none;
+    }
     #anjian{
         display: block;
         position: relative;

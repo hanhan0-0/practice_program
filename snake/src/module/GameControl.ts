@@ -11,6 +11,7 @@ class GameControl {
   Down: HTMLElement;
   Left: HTMLElement;
   Right: HTMLElement;
+  History: HTMLElement;
   //移动方向
   direction: string = "Right";
   //创建一个属性用来记录游戏是否结束
@@ -23,6 +24,7 @@ class GameControl {
     this.Up = document.getElementById("top")!;
     this.Left = document.getElementById("left")!;
     this.Right = document.getElementById("right")!;
+    this.History = document.getElementById("sort")!;
     this.init();
   }
   init() {
@@ -32,6 +34,14 @@ class GameControl {
     this.Up.addEventListener("click", this.clickHandler.bind(this, "up"));
     this.Left.addEventListener("click", this.clickHandler.bind(this, "left"));
     this.Right.addEventListener("click", this.clickHandler.bind(this, "right"));
+    let arr = JSON.parse(localStorage.getItem("history") || "[]");
+    arr.sort((a: number, b: number) => b - a);
+    for (let i = 0; i < arr.length; i++) {
+      if (i == 5) break;
+      else {
+        this.History.insertAdjacentHTML("beforeend", `<li>${arr[i]}分</li>`);
+      }
+    }
     this.run();
   }
   keydownHandler(event: KeyboardEvent) {
@@ -81,6 +91,11 @@ class GameControl {
       this.snake.Y = y;
     } catch (e) {
       alert((e as any).message + "Game Over!刷新后可重新开始");
+      let arr = JSON.parse(localStorage.getItem("history") || "[]");
+      arr.push(this.ScorePanel.score);
+      arr.sort((a: number, b: number) => b - a);
+      arr.splice(5, arr.length - 5);
+      localStorage.setItem("history", JSON.stringify(arr));
       this.isLive = false;
     }
 
