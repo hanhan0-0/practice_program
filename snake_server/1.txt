@@ -1,0 +1,29 @@
+upstream nodejs{
+  server 127.0.0.1:3000;
+  keepalive 64;
+}
+
+server {
+  listen       80;
+  server_name  62.234.57.129 ;
+ location / {
+            root /home/ubuntu;
+            index index.html index.htm index.nginx-debian.html;
+
+  }
+  location /ws {
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      proxy_pass      http://nodejs;
+  }
+ 
+}
+server {
+        listen 80;
+       server_name      62.234.57.129;
+       location / {
+            root /home/ubuntu;
+            index index.html index.htm index.nginx-debian.html;
+
+        }
+}

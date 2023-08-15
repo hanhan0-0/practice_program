@@ -2,6 +2,7 @@
 import Snake from "./Snake";
 import Food from "./Food";
 import ScorePanel from "./ScorePanel";
+import ws from "../request/index";
 class GameControl {
   //定义三个属性
   snake: Snake;
@@ -91,7 +92,10 @@ class GameControl {
       this.snake.Y = y;
     } catch (e) {
       alert((e as any).message + "Game Over!刷新后可重新开始");
+      let name = prompt("是否上传记录，上传则输入您的名字", "user");
       let arr = JSON.parse(localStorage.getItem("history") || "[]");
+      let sendObj = { name: name, score: this.ScorePanel.score };
+      ws.send(JSON.stringify(sendObj));
       arr.push(this.ScorePanel.score);
       arr.sort((a: number, b: number) => b - a);
       arr.splice(5, arr.length - 5);
